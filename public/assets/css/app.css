@@ -1,0 +1,39 @@
+.mt-10{
+    margin-top: 30px;
+}
+.vh80{
+    height: 80vh;
+}
+.w-600{
+    width: 600px;
+}
+.width-45{
+    width: 45%;
+}
+
+.fz-12{
+    font-size: 12px;
+}
+
+.blue-color{
+    color: #007bff;
+}
+
+.fixed-pos{
+    position: fixed;
+    bottom: 50px;
+    right: 60px;
+}
+
+.selected-background{
+    background-color: #007bff!important;
+    color:white!important;
+}
+
+.hr-custom{
+    background-color:#73777B;
+    width: 1px;height: inherit;
+    opacity:0.4;
+    margin-right: 40px;
+    margin-left: 80px
+}
