@@ -80,11 +80,11 @@ return [
 
         'mongodb2' => [
             'driver' => 'mongodb',
-            'host' => env('DB_HOST2', 'localhost'),
-            'port' => env('DB_PORT2', 27017),
-            'database' => env('DB_DATABASE2', 'templateDB'),
-            'username' => env('DB_USERNAME2', ''),
-            'password' => env('DB_PASSWORD2', ''),
+            'host' => env('DB_HOST_TEMPLATEDB', 'localhost'),
+            'port' => env('DB_PORT_TEMPLATEDB', 27017),
+            'database' => env('DB_DATABASE_TEMPLATEDB', 'templateDB'),
+            'username' => env('DB_USERNAME2_TEMPLATEDB', ''),
+            'password' => env('DB_PASSWORD2_TEMPLATEDB', ''),
             'options' => [],
         ],
 

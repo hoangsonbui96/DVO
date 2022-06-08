@@ -87,24 +87,15 @@ class MFamilyController extends Controller
                 ],['session' => $session]
             );
 
-            //create new database from m_database
-            $dbname = $request->db_user;
-            $client->selectCollection($dbname, 'm_database')->insertOne(
-                [
-                    'db_user' => $request->db_user,
-                    'db_pwd' => $request->db_pwd,
-                    'db_host' => $request->db_host,
-                    'db_port' => $request->db_port,
-                    'ref_family_id' => $id->getInsertedId(),
-                ],['session' => $session]
-            );
+            //get Id from created database
+            $getid = $id->getInsertedId();
 
             //get all collection from templateDB
             $listCollection = $client->templateDB->listCollections();
             foreach($listCollection as $collections){
                 //get all document from getted collection
                 $document = DB::connection('mongodb2')->table($collections['name'])->get();
-                $client->selectCollection($dbname, $collections['name'])->insertMany($document->toArray(), ['session' => $session]);
+                $client->selectCollection("dvo_".$getid, $collections['name'])->insertMany($document->toArray(), ['session' => $session]);
             }
             $session->commitTransaction();
         }catch (Exception $e){
