@@ -42,7 +42,7 @@
                                 <div class="row mt-4">
                                     <h3 class="col-9">Thông tin database</h3>
                                     <div method="put">
-                                        <button id="testConnect" class="btn btn-danger d-flex justify-content-center align-items-center" style="font-size: 12px;">Test connection</button>
+                                        <button id="testConnect" class="btn btn-warning d-flex justify-content-center align-items-center" style="font-size: 12px;">Test connection</button>
                                     </div>
                                 </div>
                                 <div class="form-group">

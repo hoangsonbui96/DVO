@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Thongtindongho;
+use App\Models\MFamily;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -19,8 +19,6 @@ class MFamilyController extends Controller
     }
 
     public function create(){
-        //dd(env('DB_CONNECTION'));
-        //get database info
         return view('mfamily.create', ['db_host' => env('DB_HOST'),
                                        'db_port' => env('DB_PORT')
                                       ]);
@@ -88,39 +86,31 @@ class MFamilyController extends Controller
                     'ref_family_id' => $id->getInsertedId(),
                 ],['session' => $session]
             );
+
+            //create new database from m_database
+            $dbname = $request->db_user;
+            $client->selectCollection($dbname, 'm_database')->insertOne(
+                [
+                    'db_user' => $request->db_user,
+                    'db_pwd' => $request->db_pwd,
+                    'db_host' => $request->db_host,
+                    'db_port' => $request->db_port,
+                    'ref_family_id' => $id->getInsertedId(),
+                ],['session' => $session]
+            );
+
+            //get all collection from templateDB
+            $listCollection = $client->templateDB->listCollections();
+            foreach($listCollection as $collections){
+                //get all document from getted collection
+                $document = DB::connection('mongodb2')->table($collections['name'])->get();
+                $client->selectCollection($dbname, $collections['name'])->insertMany($document->toArray(), ['session' => $session]);
+            }
             $session->commitTransaction();
         }catch (Exception $e){
             $session->abortTransaction();
             throw new Exception($e->getMessage());
-        }
-        //create new database from m_database
-        $dbname = $request->db_user;
-        $client->selectCollection($dbname, 'm_database')->insertOne(
-            [
-                'db_user' => $request->db_user,
-                'db_pwd' => $request->db_pwd,
-                'db_host' => $request->db_host,
-                'db_port' => $request->db_port,
-                'ref_family_id' => $id->getInsertedId(),
-            ]
-        );
-
-        //get data from thongtindongho collection in templateDB
-        $thongtin = Thongtindongho::get();
-        $subset = $thongtin->map(function ($data) {
-            return collect($data->toArray())
-                ->only(['Name', 'Que_quan', 'Univer_day'])
-                ->all();
-        });
-        
-        foreach($subset as $smth){
-            $client->selectCollection($dbname, 'thongtindongho')->insertOne(
-                [
-                    'Name' => $smth['Name'],
-                    'Que_quan' => $smth['Que_quan'],
-                    'Univer_day' => $smth['Univer_day'],
-                ]
-            );
+            $session->endSession();
         }
     }
 

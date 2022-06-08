@@ -36,7 +36,8 @@
                       <i class="fas fa-user-circle mr-3" style="font-size: 32px"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mr-4">
-                        <a href="{{route('logins')}}" class="dropdown-item">Đăng xuất</a>
+                        @csrf
+                        <a href="{{route('logins')}}" class="dropdown-item" id="logout-btn">Đăng xuất</a>
                     </div>
                   </li>
                 </ul>

@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -72,6 +73,7 @@ class AuthController extends Controller
                 throw new \Exception('Error in Login');
             }
 
+            //create token when login success
             $tokenResult = $user->createToken('authToken')->plainTextToken;
 
             return response()->json([
@@ -80,6 +82,7 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
                 'message' => 'Login success'
             ]);
+            
         } catch (\Exception $error) {
             return response()->json([
                 'status_code' => 500,
@@ -91,7 +94,9 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Cookie::queue(Cookie::forget('laravel_session'));
+        $request->user()->tokens()->delete();
+        //$request->user()->currentAccessToken()->delete();
         return response()->json([
             'status' => 'success',
         ]);

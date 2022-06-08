@@ -19,8 +19,10 @@ $(document).ready(function(){
             data:{username : username , password : password, _token : _token},
             success:function(response){
                 if(response.message == "Login success"){
+                    console.log(response.access_token);
                     console.log("thành công");
                     window.location = "http://127.0.0.1:8000/user";
+                    $("#accesstoken").html(response.access_token);
                 }else{
                     console.log("thất bại");
                     $("div[data-valmsg-for = 'loginfail']").addClass('alert alert-danger');

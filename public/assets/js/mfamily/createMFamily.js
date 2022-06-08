@@ -42,8 +42,8 @@ $(document).ready(function(){
         e.preventDefault();
         //check valid family
         var family_name = $("#InputFamilyName").val();
-        var family_hometown =$("#InputFamilyHT").val();
-        var family_anniversary =$("#InputFamilyAni").val();
+        var family_hometown = $("#InputFamilyHT").val();
+        var family_anniversary = $("#InputFamilyAni").val();
         //check valid customer
         var user_name = $("#InputUserName").val();
         var full_name = $("#InputFullName").val();
@@ -57,6 +57,7 @@ $(document).ready(function(){
         var db_pwd = $("#InputDbPw").val();
         var db_host = $("#InputDbHost").val();
         var db_port = $("#InputDbPort").val();
+        
         let _token = $("input[name=_token]").val();
 
         if($.trim(family_name) == ''){
@@ -67,14 +68,6 @@ $(document).ready(function(){
             $("div[data-valmsg-for = 'user_name']").addClass('alert alert-danger');
             $("div[data-valmsg-for = 'user_name']").text("Tài khoản khách hàng không được để trống");
         }
-        // if($.trim(family_hometown) == ''){
-        //     $("div[data-valmsg-for = 'family_hometown']").addClass('alert alert-danger');
-        //     $("div[data-valmsg-for = 'family_hometown']").text("Quê quán không được để trống");
-        // }
-        // if($.trim(family_anniversary) == ''){
-        //     $("div[data-valmsg-for = 'family_anniversary']").addClass('alert alert-danger');
-        //     $("div[data-valmsg-for = 'family_anniversary']").text("Ngày kỷ niệm không được để trống");
-        // }
         if($.trim(full_name) == ''){
             $("div[data-valmsg-for = 'full_name']").addClass('alert alert-danger');
             $("div[data-valmsg-for = 'full_name']").text("Họ và tên khách hàng không được để trống");
@@ -152,6 +145,10 @@ $(document).ready(function(){
                 setTimeout(function(){
                     $('#failBar').css("display","none")
                 }, 5000);
+                if(response.responseJSON.message.includes("E11000 duplicate key")){
+                    $("div[data-valmsg-for = 'db_user']").addClass('alert alert-danger');
+                    $("div[data-valmsg-for = 'db_user']").text("Tài khoản database đã tồn tại!");
+                }
                 if(response.responseJSON.errors.family_name){
                     $("div[data-valmsg-for = 'family_name']").addClass('alert alert-danger');
                     $("div[data-valmsg-for = 'family_name']").text(response.responseJSON.errors.family_name);
@@ -160,15 +157,6 @@ $(document).ready(function(){
                     $("div[data-valmsg-for = 'user_name']").addClass('alert alert-danger');
                     $("div[data-valmsg-for = 'user_name']").text(response.responseJSON.errors.user_name);
                 }
-                // if(response.responseJSON.errors.family_hometown){
-                //     $("div[data-valmsg-for = 'family_hometown']").addClass('alert alert-danger');
-                //     $("div[data-valmsg-for = 'family_hometown']").text(response.responseJSON.errors.family_hometown);
-                // }
-
-                // if(response.responseJSON.errors.family_anniversary){
-                //     $("div[data-valmsg-for = 'family_anniversary']").addClass('alert alert-danger');
-                //     $("div[data-valmsg-for = 'family_anniversary']").text(response.responseJSON.errors.family_anniversary);
-                // }
                 if(response.responseJSON.errors.full_name){
                     $("div[data-valmsg-for = 'full_name']").addClass('alert alert-danger');
                     $("div[data-valmsg-for = 'full_name']").text(response.responseJSON.errors.full_name);
@@ -217,14 +205,6 @@ $(document).ready(function(){
         $("div[data-valmsg-for = 'user_name']").removeClass('alert alert-danger');
         $("div[data-valmsg-for = 'user_name']").text("");
     });
-    // $('#InputFamilyHT').on('keydown', function(){
-    //     $("div[data-valmsg-for = 'family_hometown']").removeClass('alert alert-danger');
-    //     $("div[data-valmsg-for = 'family_hometown']").text("");
-    // });
-    // $('#InputFamilyAni').on('change', function(){
-    //     $("div[data-valmsg-for = 'family_anniversary']").removeClass('alert alert-danger');
-    //     $("div[data-valmsg-for = 'family_anniversary']").text("");
-    // });
     $('#InputFullName').on('keydown', function(){
         $("div[data-valmsg-for = 'full_name']").removeClass('alert alert-danger');
         $("div[data-valmsg-for = 'full_name']").text("");

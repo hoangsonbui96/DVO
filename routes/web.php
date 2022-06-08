@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 Route::match(['GET', 'POST'],'/', [AuthController::class, 'index'])->name('logins');
 
 
-Route::get('user', [UserController::class, 'index'])->name('user.index');
+Route::middleware('auth:sanctum')->get('user', [UserController::class, 'index'])->name('user.index');
 //Route::post('user', [UserController::class, 'indexpost'])->name('user.indexpost');
 
 //Create User
@@ -56,7 +56,5 @@ Route::get('/mfamily/search', [MFamilyController::class, 'getSearchAjax'])->name
 Route::get('/mfamily/create', [MFamilyController::class, 'create']);
 Route::post('/mfamily/create', [MFamilyController::class, 'store'])->name('mfamily.store');
 Route::put('/mfamily/create', [MFamilyController::class, 'testConnection'])->name('testConnection');
-
-//Route::post('/mfamily/pagination', [MFamilyController::class, 'getPagination'])->name('mfamily.pagination');
 
 
